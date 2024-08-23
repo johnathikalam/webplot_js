@@ -60,7 +60,6 @@ function digitizeImage(file, img) {
 
         csvfilename = path.join(outputPath, path.basename(file, fileExtension) + "_" + ds.name + ".csv");
         fs.writeFileSync(csvfilename, csv);
-
     }
 
     // export JSON specific to this image for later use

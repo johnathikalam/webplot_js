@@ -48,34 +48,7 @@ wpd.algoManager = (function() {
                 '<option value="averagingWindow">' + wpd.gettext('averaging-window') + '</option>';
         }
 
-        // X Step w/ Interpolation and X Step
-        if (axes instanceof wpd.XYAxes) {
-            innerHTML += '<option value="XStepWithInterpolation">' +
-                wpd.gettext('x-step-with-interpolation') + '</option>';
-            innerHTML += '<option value="XStep">' + wpd.gettext('x-step') + '</option>';
-        }
-
-        // CustomIndependents
-        if (axes instanceof wpd.XYAxes) {
-            innerHTML += '<option value="CustomIndependents">' + wpd.gettext('custom-independents') + '</option>';
-        }
-
-        // Blob Detector
-        if (!(axes instanceof wpd.BarAxes)) {
-            innerHTML +=
-                '<option value="blobDetector">' + wpd.gettext('blob-detector') + '</option>';
-        }
-
-        // Bar Extraction
-        if (axes instanceof wpd.BarAxes) {
-            innerHTML +=
-                '<option value="barExtraction">' + wpd.gettext('bar-extraction') + '</option>';
-        }
-
-        // Histogram
-        if (axes instanceof wpd.XYAxes) {
-            innerHTML += '<option value="histogram">' + wpd.gettext('histogram') + '</option>';
-        }
+    
 
         $algoOptions.innerHTML = innerHTML;
 
@@ -83,21 +56,7 @@ wpd.algoManager = (function() {
         if (autoDetector.algorithm != null) {
             if (autoDetector.algorithm instanceof wpd.AveragingWindowAlgo) {
                 $algoOptions.value = "averagingWindow";
-            } else if (autoDetector.algorithm instanceof wpd.XStepWithInterpolationAlgo) {
-                $algoOptions.value = "XStepWithInterpolation";
-            } else if (autoDetector.algorithm instanceof wpd.CustomIndependents) {
-                $algoOptions.value = "CustomIndependents";
-            } else if (autoDetector.algorithm instanceof wpd.AveragingWindowWithStepSizeAlgo) {
-                $algoOptions.value = "XStep";
-            } else if (autoDetector.algorithm instanceof wpd.BlobDetectorAlgo) {
-                $algoOptions.value = "blobDetector";
-            } else if (autoDetector.algorithm instanceof wpd.BarExtractionAlgo) {
-                if (axes instanceof wpd.XYAxes) {
-                    $algoOptions.value = "histogram";
-                } else {
-                    $algoOptions.value = "barExtraction";
-                }
-            }
+            } 
             renderParameters(autoDetector.algorithm);
         } else {
             applyAlgoSelection();
@@ -116,19 +75,20 @@ wpd.algoManager = (function() {
 
         if (selectedValue === 'averagingWindow') {
             autoDetector.algorithm = new wpd.AveragingWindowAlgo();
-        } else if (selectedValue === 'XStepWithInterpolation') {
-            autoDetector.algorithm = new wpd.XStepWithInterpolationAlgo();
-        } else if (selectedValue === 'CustomIndependents') {
-            autoDetector.algorithm = new wpd.CustomIndependents();
-        } else if (selectedValue === 'XStep') {
-            autoDetector.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
-        } else if (selectedValue === 'blobDetector') {
-            autoDetector.algorithm = new wpd.BlobDetectorAlgo();
-        } else if (selectedValue === 'barExtraction' || selectedValue === 'histogram') {
-            autoDetector.algorithm = new wpd.BarExtractionAlgo();
-        } else {
-            autoDetector.algorithm = new wpd.AveragingWindowAlgo();
-        }
+        } 
+        // else if (selectedValue === 'XStepWithInterpolation') {
+        //     autoDetector.algorithm = new wpd.XStepWithInterpolationAlgo();
+        // } else if (selectedValue === 'CustomIndependents') {
+        //     autoDetector.algorithm = new wpd.CustomIndependents();
+        // } else if (selectedValue === 'XStep') {
+        //     autoDetector.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
+        // } else if (selectedValue === 'blobDetector') {
+        //     autoDetector.algorithm = new wpd.BlobDetectorAlgo();
+        // } else if (selectedValue === 'barExtraction' || selectedValue === 'histogram') {
+        //     autoDetector.algorithm = new wpd.BarExtractionAlgo();
+        // } else {
+        //     autoDetector.algorithm = new wpd.AveragingWindowAlgo();
+        // }
 
         renderParameters(autoDetector.algorithm);
     }
@@ -141,10 +101,16 @@ wpd.algoManager = (function() {
 
         for (let pi = 0; pi < algoParamKeys.length; pi++) {
             let algoParam = algoParams[algoParamKeys[pi]];
+            
             tableString += '<tr><td>' + algoParam[0] +
                 '</td><td><input type="text" size=3 id="algo-param-' + algoParamKeys[pi] +
                 '" class="algo-params" value="' + algoParam[2] + '"/></td><td>' +
                 algoParam[1] + '</td></tr>';
+
+            // tableString += '<tr><td>' + algoParam[0] +
+            //     '</td><td><input type="text" size=3 id="algo-param-' + algoParamKeys[pi] +
+            //     '" class="algo-params" value="' + algoParam[2] + '"/></td><td>' +
+            //     algoParam[1] + '</td></tr>';
         }
 
         tableString += "</table>";
@@ -160,6 +126,11 @@ wpd.algoManager = (function() {
         let ctx = wpd.graphicsWidget.getAllContexts();
         let imageSize = wpd.graphicsWidget.getImageSize();
 
+        // console.log("algo: " + algo);
+        // console.log("axes: " + axes);
+        // console.log("dataset: " + dataset);
+        // console.log("imageSize: "+imageSize);
+        // console.log("ctx: "+ctx);
         let algoParams = {};
         for (let pi = 0; pi < $paramFields.length; pi++) {
             let paramId = $paramFields[pi].id;
@@ -175,6 +146,7 @@ wpd.algoManager = (function() {
         autoDetector.imageHeight = imageSize.height;
         autoDetector.generateBinaryData(imageData);
         wpd.graphicsWidget.setRepainter(repainter);
+        console.log("autoDetector: "+autoDetector);
         algo.run(autoDetector, dataset, axes);
         wpd.graphicsWidget.forceHandlerRepaint();
         wpd.dataPointCounter.setCount(dataset.getCount());

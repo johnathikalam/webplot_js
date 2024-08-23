@@ -42,6 +42,7 @@ wpd.XYAxesCalibrator = class extends wpd.AxesCalibrator {
     pickCorners() {
         wpd.popup.close('xyAxesInfo');
         let tool = new wpd.AxesCornersTool(this._calibration, false);
+        console.log("tool: "+tool);
         wpd.graphicsWidget.setTool(tool);
     }
 
@@ -63,10 +64,21 @@ wpd.XYAxesCalibrator = class extends wpd.AxesCalibrator {
     }
 
     align() {
-        let xmin = document.getElementById('xmin').value;
-        let xmax = document.getElementById('xmax').value;
-        let ymin = document.getElementById('ymin').value;
-        let ymax = document.getElementById('ymax').value;
+        let xmin = '0';
+        let xmax = "250";
+        let ymin = "-30";
+        let ymax = "30";
+
+        console.log("xmin: "+xmin);
+        console.log("xmin: "+xmax);
+        console.log("xmin: "+ymin);
+        console.log("xmin: "+ymax);
+
+
+        // let xmin = document.getElementById('xmin').value;
+        // let xmax = document.getElementById('xmax').value;
+        // let ymin = document.getElementById('ymin').value;
+        // let ymax = document.getElementById('ymax').value;
         let xlog = document.getElementById('xlog').checked;
         let ylog = document.getElementById('ylog').checked;
         let noRotation = document.getElementById('xy-axes-no-rotation').checked;
@@ -105,285 +117,12 @@ wpd.XYAxesCalibrator = class extends wpd.AxesCalibrator {
     }
 };
 
-wpd.BarAxesCalibrator = class extends wpd.AxesCalibrator {
-    start() {
-        wpd.popup.show('barAxesInfo');
-    }
-    reload() {
-        let tool = new wpd.AxesCornersTool(this._calibration, true);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    pickCorners() {
-        wpd.popup.close('barAxesInfo');
-        let tool = new wpd.AxesCornersTool(this._calibration, false);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    getCornerValues() {
-        wpd.popup.show('barAlignment');
-        if (this._isEditing) {
-            let axes = wpd.tree.getActiveAxes();
-            let prevCal = axes.calibration;
-            if (prevCal.getCount() == 2) {
-                document.getElementById('bar-axes-p1').value = prevCal.getPoint(0).dy;
-                document.getElementById('bar-axes-p2').value = prevCal.getPoint(1).dy;
-                document.getElementById('bar-axes-log-scale').checked = axes.isLog();
-                document.getElementById('bar-axes-rotated').checked = axes.isRotated();
-            }
-        }
-    }
-    align() {
-        let p1 = document.getElementById('bar-axes-p1').value;
-        let p2 = document.getElementById('bar-axes-p2').value;
-        let isLogScale = document.getElementById('bar-axes-log-scale').checked;
-        let isRotated = document.getElementById('bar-axes-rotated').checked;
-        let axes = this._isEditing ? wpd.tree.getActiveAxes() : new wpd.BarAxes();
-
-        this._calibration.setDataAt(0, 0, p1);
-        this._calibration.setDataAt(1, 0, p2);
-        if (!axes.calibrate(this._calibration, isLogScale, isRotated)) {
-            wpd.popup.close('barAlignment');
-            wpd.messagePopup.show(wpd.gettext('calibration-invalid-inputs'),
-                wpd.gettext('calibration-enter-valid'),
-                wpd.alignAxes.getCornerValues);
-            return false;
-        }
-        if (!this._isEditing) {
-            axes.name = wpd.alignAxes.makeAxesName(wpd.BarAxes);
-            let plot = wpd.appData.getPlotData();
-            plot.addAxes(axes, wpd.appData.isMultipage());
-            wpd.alignAxes.postProcessAxesAdd(axes);
-        }
-        wpd.popup.close('barAlignment');
-        return true;
-    }
-};
-
-wpd.PolarAxesCalibrator = class extends wpd.AxesCalibrator {
-
-    start() {
-        wpd.popup.show('polarAxesInfo');
-    }
-    reload() {
-        let tool = new wpd.AxesCornersTool(this._calibration, true);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    pickCorners() {
-        wpd.popup.close('polarAxesInfo');
-        let tool = new wpd.AxesCornersTool(this._calibration, false);
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    getCornerValues() {
-        wpd.popup.show('polarAlignment');
-        if (this._isEditing) {
-            let axes = wpd.tree.getActiveAxes();
-            let prevCal = axes.calibration;
-            if (prevCal.getCount() == 3) {
-                document.getElementById('polar-r1').value = prevCal.getPoint(1).dx;
-                document.getElementById('polar-theta1').value = prevCal.getPoint(1).dy;
-                document.getElementById('polar-r2').value = prevCal.getPoint(2).dx;
-                document.getElementById('polar-theta2').value = prevCal.getPoint(2).dy;
-                document.getElementById('polar-degrees').checked = axes.isThetaDegrees();
-                document.getElementById('polar-radians').checked = !axes.isThetaDegrees();
-                document.getElementById('polar-clockwise').checked = axes.isThetaClockwise();
-                document.getElementById('polar-log-scale').checked = axes.isRadialLog();
-            }
-        }
-    }
-
-    align() {
-        let r1 = parseFloat(document.getElementById('polar-r1').value);
-        let theta1 = parseFloat(document.getElementById('polar-theta1').value);
-        let r2 = parseFloat(document.getElementById('polar-r2').value);
-        let theta2 = parseFloat(document.getElementById('polar-theta2').value);
-        let degrees = document.getElementById('polar-degrees').checked;
-        let orientation = document.getElementById('polar-clockwise').checked;
-        let rlog = document.getElementById('polar-log-scale').checked;
-        let axes = this._isEditing ? wpd.tree.getActiveAxes() : new wpd.PolarAxes();
-        let isDegrees = degrees;
-
-        this._calibration.setDataAt(1, r1, theta1);
-        this._calibration.setDataAt(2, r2, theta2);
-        axes.calibrate(this._calibration, isDegrees, orientation, rlog);
-        if (!this._isEditing) {
-            axes.name = wpd.alignAxes.makeAxesName(wpd.PolarAxes);
-            let plot = wpd.appData.getPlotData();
-            plot.addAxes(axes, wpd.appData.isMultipage());
-            wpd.alignAxes.postProcessAxesAdd(axes);
-        }
-        wpd.popup.close('polarAlignment');
-        return true;
-    }
-};
-
-wpd.TernaryAxesCalibrator = class extends wpd.AxesCalibrator {
-
-    start() {
-        wpd.popup.show('ternaryAxesInfo');
-    }
-
-    reload() {
-        let tool = new wpd.AxesCornersTool(this._calibration, true);
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    pickCorners() {
-        wpd.popup.close('ternaryAxesInfo');
-        let tool = new wpd.AxesCornersTool(this._calibration, false);
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    getCornerValues() {
-        wpd.popup.show('ternaryAlignment');
-
-        if (this._isEditing) {
-            let axes = wpd.tree.getActiveAxes();
-            let prevCal = axes.calibration;
-            if (prevCal.getCount() == 3) {
-                document.getElementById('range0to1').checked = !axes.isRange100();
-                document.getElementById('range0to100').checked = axes.isRange100();
-                document.getElementById('ternarynormal').checked = axes.isNormalOrientation();
-            }
-        }
-    }
-
-    align() {
-        let range100 = document.getElementById('range0to100').checked;
-        let ternaryNormal = document.getElementById('ternarynormal').checked;
-        let axes = this._isEditing ? wpd.tree.getActiveAxes() : new wpd.TernaryAxes();
-
-        axes.calibrate(this._calibration, range100, ternaryNormal);
-        if (!this._isEditing) {
-            axes.name = wpd.alignAxes.makeAxesName(wpd.TernaryAxes);
-            let plot = wpd.appData.getPlotData();
-            plot.addAxes(axes, wpd.appData.isMultipage());
-            wpd.alignAxes.postProcessAxesAdd(axes);
-        }
-        wpd.popup.close('ternaryAlignment');
-        return true;
-    }
-};
-
-wpd.MapAxesCalibrator = class extends wpd.AxesCalibrator {
-
-    start() {
-        wpd.popup.show('mapAxesInfo');
-    }
-    reload() {
-        let tool = new wpd.AxesCornersTool(this._calibration, true);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    pickCorners() {
-        wpd.popup.close('mapAxesInfo');
-        var tool = new wpd.AxesCornersTool(this._calibration, false);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    getCornerValues() {
-        wpd.popup.show('mapAlignment');
-        if (this._isEditing) {
-            let axes = wpd.tree.getActiveAxes();
-            let prevCal = axes.calibration;
-            if (prevCal.getCount() == 2) {
-                document.getElementById('scaleLength').checked = axes.getScaleLength();
-                document.getElementById('scaleUnits').checked = axes.getUnits();
-            }
-        }
-    }
-    align() {
-        let scaleLength = parseFloat(document.getElementById('scaleLength').value);
-        let scaleUnits = document.getElementById('scaleUnits').value;
-        let isOriginLocationBottomLeft = document.getElementById('map-origin-bottom-left').checked;
-        let originLocation = isOriginLocationBottomLeft ? "bottom-left" : "top-left";
-        let imageHeight = wpd.graphicsWidget.getImageSize().height;
-        let axes = this._isEditing ? wpd.tree.getActiveAxes() : new wpd.MapAxes();
-
-        axes.calibrate(this._calibration, scaleLength, scaleUnits, originLocation, imageHeight);
-        if (!this._isEditing) {
-            axes.name = wpd.alignAxes.makeAxesName(wpd.MapAxes);
-            let plot = wpd.appData.getPlotData();
-            plot.addAxes(axes, wpd.appData.isMultipage());
-            wpd.alignAxes.postProcessAxesAdd(axes);
-        }
-        wpd.popup.close('mapAlignment');
-        return true;
-    }
-};
-
-wpd.CircularChartRecorderCalibrator = class extends wpd.AxesCalibrator {
-
-    start() {
-        wpd.popup.show('circularChartRecorderAxesInfo');
-    }
-    reload() {
-        let tool = new wpd.AxesCornersTool(this._calibration, true);
-        wpd.graphicsWidget.setTool(tool);
-    }
-    pickCorners() {
-        wpd.popup.close('circularChartRecorderAxesInfo');
-        let tool = new wpd.AxesCornersTool(this._calibration, false);
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    getCornerValues() {
-        wpd.popup.show('circularChartRecorderAlignment');
-        if (this._isEditing) {
-            const axes = wpd.tree.getActiveAxes();
-            const prevCal = axes.calibration;
-            if (prevCal.getCount() == 5) {
-                document.getElementById('circular-t0').value = prevCal.getPoint(0).dx;
-                document.getElementById('circular-r0').value = prevCal.getPoint(0).dy;
-                const startTime = axes.getStartTime();
-                const rotationTime = axes.getRotationTime();
-                const rotationDirection = axes.getRotationDirection();
-                if (startTime != null) {
-                    document.getElementById('circular-tstart').value = startTime;
-                    document.getElementById('circular-chart-recorder-rotation-time').value = rotationTime;
-                    document.getElementById('circular-chart-rotation-direction').value = rotationDirection;
-                }
-                document.getElementById('circular-r2').value = prevCal.getPoint(2).dy;
-            }
-        }
-    }
-
-    align() {
-        const t0 = document.getElementById('circular-t0').value;
-        const r0 = parseFloat(document.getElementById('circular-r0').value);
-        const r2 = parseFloat(document.getElementById('circular-r2').value);
-        const tstart = document.getElementById('circular-tstart').value;
-        const rotationTime = document.getElementById('circular-chart-recorder-rotation-time').value;
-        const rotationDirection = document.getElementById('circular-chart-rotation-direction').value;
-        const axes = this._isEditing ? wpd.tree.getActiveAxes() : new wpd.CircularChartRecorderAxes();
-
-        this._calibration.setDataAt(0, t0, r0);
-        this._calibration.setDataAt(1, t0, 0);
-        this._calibration.setDataAt(2, t0, r2);
-        this._calibration.setDataAt(3, 0, r2);
-        this._calibration.setDataAt(4, 0, r2);
-
-        axes.calibrate(this._calibration, tstart, rotationTime, rotationDirection);
-        if (!this._isEditing) {
-            axes.name = wpd.alignAxes.makeAxesName(wpd.CircularChartRecorderAxes);
-            const plot = wpd.appData.getPlotData();
-            plot.addAxes(axes, wpd.appData.isMultipage());
-            wpd.alignAxes.postProcessAxesAdd(axes);
-        }
-        wpd.popup.close('circularChartRecorderAlignment');
-        return true;
-    }
-};
-
 wpd.alignAxes = (function() {
     let calibration = null;
     let calibrator = null;
 
     function initiatePlotAlignment() {
         let xyEl = document.getElementById('r_xy');
-        let polarEl = document.getElementById('r_polar');
-        let ternaryEl = document.getElementById('r_ternary');
-        let mapEl = document.getElementById('r_map');
-        let imageEl = document.getElementById('r_image');
-        let barEl = document.getElementById('r_bar');
-        let circularChartRecorderEl = document.getElementById('r_circular_chart_recorder');
 
         wpd.popup.close('axesList');
 
@@ -393,53 +132,8 @@ wpd.alignAxes = (function() {
             calibration.labelPositions = ['N', 'N', 'E', 'E'];
             calibration.maxPointCount = 4;
             calibrator = new wpd.XYAxesCalibrator(calibration);
-        } else if (barEl.checked === true) {
-            calibration = new wpd.Calibration(2);
-            calibration.labels = ['P1', 'P2'];
-            calibration.labelPositions = ['S', 'S'];
-            calibration.maxPointCount = 2;
-            calibrator = new wpd.BarAxesCalibrator(calibration);
-        } else if (polarEl.checked === true) {
-            calibration = new wpd.Calibration(2);
-            calibration.labels = ['Origin', 'P1', 'P2'];
-            calibration.labelPositions = ['E', 'S', 'S'];
-            calibration.maxPointCount = 3;
-            calibrator = new wpd.PolarAxesCalibrator(calibration);
-        } else if (ternaryEl.checked === true) {
-            calibration = new wpd.Calibration(2);
-            calibration.labels = ['A', 'B', 'C'];
-            calibration.labelPositions = ['S', 'S', 'E'];
-            calibration.maxPointCount = 3;
-            calibrator = new wpd.TernaryAxesCalibrator(calibration);
-        } else if (mapEl.checked === true) {
-            calibration = new wpd.Calibration(2);
-            calibration.labels = ['P1', 'P2'];
-            calibration.labelPositions = ['S', 'S'];
-            calibration.maxPointCount = 2;
-            calibrator = new wpd.MapAxesCalibrator(calibration);
-        } else if (imageEl.checked === true) {
-            calibration = null;
-            calibrator = null;
-            var imageAxes = new wpd.ImageAxes();
-            imageAxes.name = wpd.alignAxes.makeAxesName(wpd.ImageAxes);
-            imageAxes.calibrate();
-            wpd.appData.getPlotData().addAxes(imageAxes, wpd.appData.isMultipage());
-            postProcessAxesAdd(imageAxes);
-            wpd.tree.refresh();
-            let dsNameColl = wpd.appData.getPlotData().getDatasetNames();
-            if (dsNameColl.length > 0) {
-                let dsName = dsNameColl[dsNameColl.length - 1];
-                wpd.tree.selectPath("/" + wpd.gettext("datasets") + "/" + dsName, true);
-            }
-            wpd.acquireData.load();
-        } else if (circularChartRecorderEl.checked === true) {
-            calibration = new wpd.Calibration(2);
-            calibration.labels = ['(T0,R0)', '(T0,R1)', '(T0,R2)', '(T1,R2)', '(T2,R2)'];
-            calibration.labelPositions = ['S', 'S', 'S', 'S', 'S'];
-            calibration.maxPointCount = 5;
-            calibrator = new wpd.CircularChartRecorderCalibrator(calibration);
-        }
-
+        } 
+        
         if (calibrator != null) {
             calibrator.start();
             if (circularChartRecorderEl.checked == true) {
@@ -503,16 +197,6 @@ wpd.alignAxes = (function() {
         calibration = axes.calibration;
         if (axes instanceof wpd.XYAxes) {
             calibrator = new wpd.XYAxesCalibrator(calibration, true);
-        } else if (axes instanceof wpd.BarAxes) {
-            calibrator = new wpd.BarAxesCalibrator(calibration, true);
-        } else if (axes instanceof wpd.PolarAxes) {
-            calibrator = new wpd.PolarAxesCalibrator(calibration, true);
-        } else if (axes instanceof wpd.TernaryAxes) {
-            calibrator = new wpd.TernaryAxesCalibrator(calibration, true);
-        } else if (axes instanceof wpd.MapAxes) {
-            calibrator = new wpd.MapAxesCalibrator(calibration, true);
-        } else if (axes instanceof wpd.CircularChartRecorderAxes) {
-            calibrator = new wpd.CircularChartRecorderCalibrator(calibration, true);
         }
         if (calibrator == null)
             return;
@@ -522,6 +206,7 @@ wpd.alignAxes = (function() {
         } else {
             wpd.graphicsWidget.setRepainter(new wpd.AlignmentCornersRepainter(calibration));
         }
+
         wpd.graphicsWidget.forceHandlerRepaint();
         wpd.sidebar.show('axes-calibration-sidebar');
     }

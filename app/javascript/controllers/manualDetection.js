@@ -27,7 +27,7 @@ wpd.acquireData = (function() {
         dataset = getActiveDataset();
         axes = getAxes();
 
-        if (axes == null) {
+        if (axes== null) {
             wpd.messagePopup.show(wpd.gettext('dataset-no-calibration'),
                 wpd.gettext('calibrate-dataset'));
         } else {
@@ -91,7 +91,7 @@ wpd.acquireData = (function() {
 
     function showSidebar() {
         wpd.sidebar.show('acquireDataSidebar');
-        updateControlVisibility();
+        //updateControlVisibility();
         wpd.dataPointCounter.setCount(dataset.getCount());
     }
 
@@ -104,9 +104,9 @@ wpd.acquireData = (function() {
         }
     }
 
-    function adjustPoints() {
-        wpd.graphicsWidget.setTool(new wpd.AdjustDataPointTool(axes, dataset));
-    }
+    // function adjustPoints() {
+    //     wpd.graphicsWidget.setTool(new wpd.AdjustDataPointTool(axes, dataset));
+    // }
 
     function editLabels() {
         // this should only trigger the tool if the axes type is bar
@@ -123,9 +123,9 @@ wpd.acquireData = (function() {
             case 'a':
                 manualSelection();
                 break;
-            case 's':
-                adjustPoints();
-                break;
+            // case 's':
+            //     adjustPoints();
+            //     break;
             case 'e':
                 editLabels();
                 break;
@@ -145,7 +145,7 @@ wpd.acquireData = (function() {
     return {
         load: load,
         manualSelection: manualSelection,
-        adjustPoints: adjustPoints,
+        // adjustPoints: adjustPoints,
         deletePoint: deletePoint,
         clearAll: clearAll,
         undo: undo,

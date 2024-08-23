@@ -42,6 +42,7 @@ wpd.loadDefaultImage = function() {
         let file = new File([data], "start.png", metadata);
         wpd.imageManager.initializeFileManager([file]);
         wpd.imageManager.loadFromFile(file);
+        console.log(file);
     };
     loadImage();
 }

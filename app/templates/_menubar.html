@@ -12,15 +12,3 @@
 {% if enableTesting == True %}
 <button onclick="wpdtests.runTests();">Run Tests</button>
 {% endif %}
-<div class="wpd-menu">
-    <div class="wpd-menu-header">{{ _("Help") }}</div>
-    <div class="wpd-menu-dropdown">
-        <ul>
-            <li id="wpd-helpmenu-about" onclick="wpd.popup.show('helpWindow');">{{ _("About WebPlotDigitizer") }}</li>
-            <li id="wpd-helpmenu-tutorial"><a href="https://automeris.io/documentation.html" target="_blank">{{ _("Tutorials") }}</a></li>
-            <li id="wpd-helpmenu-manual"><a href="https://automeris.io/WebPlotDigitizer/userManual.pdf" target="_blank">{{ _("User Manual") }}</a></li>
-            <li id="wpd-helpmenu-github"><a href="https://github.com/automeris-io/WebPlotDigitizer" target="_blank">{{ _("GitHub Page") }}</a></li>
-            <li id="wpd-helpmenu-issues"><a href="https://github.com/automeris-io/WebPlotDigitizer/issues" target="_blank">{{ _("Report Issues") }}</a></li>
-        </ul>
-    </div>
-</div>

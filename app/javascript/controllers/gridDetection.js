@@ -250,7 +250,8 @@ wpd.gridDetection = (function() {
     }
 
     function changeColorDistance() {
-        let color_distance = parseFloat(document.getElementById('grid-color-distance').value);
+        let color_distance = parseFloat('0');
+        // let color_distance = parseFloat(document.getElementById('grid-color-distance').value);
         wpd.appData.getPlotData().getGridDetectionData().colorDistance = color_distance;
     }
 

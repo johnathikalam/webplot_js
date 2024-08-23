@@ -28,12 +28,12 @@ wpd.AutoDetectionData = class {
         // public
         this.imageWidth = 0;
         this.imageHeight = 0;
-        this.fgColor = [0, 0, 255];
+        this.fgColor = [128, 128, 0];
         this.bgColor = [255, 255, 255];
         this.mask = new Set();
         this.binaryData = new Set();
         this.colorDetectionMode = 'fg';
-        this.colorDistance = 120;
+        this.colorDistance = 0;
         this.algorithm = null;
         this.name = wpd._AutoDetectionDataCounter++;
     }
@@ -85,17 +85,18 @@ wpd.AutoDetectionData = class {
             let algoType = jsonObj.algorithm.algoType;
             if (algoType === "AveragingWindowAlgo") {
                 this.algorithm = new wpd.AveragingWindowAlgo();
-            } else if (algoType === "AveragingWindowWithStepSizeAlgo") {
-                this.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
-            } else if (algoType === "BarExtractionAlgo") {
-                this.algorithm = new wpd.BarExtractionAlgo();
-            } else if (algoType === "BlobDetectorAlgo") {
-                this.algorithm = new wpd.BlobDetectorAlgo();
-            } else if (algoType === "XStepWithInterpolationAlgo") {
-                this.algorithm = new wpd.XStepWithInterpolationAlgo();
-            } else if (algoType === "CustomIndependents") {
-                this.algorithm = new wpd.CustomIndependents();
-            }
+            } 
+            // else if (algoType === "AveragingWindowWithStepSizeAlgo") {
+            //     this.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
+            // } else if (algoType === "BarExtractionAlgo") {
+            //     this.algorithm = new wpd.BarExtractionAlgo();
+            // } else if (algoType === "BlobDetectorAlgo") {
+            //     this.algorithm = new wpd.BlobDetectorAlgo();
+            // } else if (algoType === "XStepWithInterpolationAlgo") {
+            //     this.algorithm = new wpd.XStepWithInterpolationAlgo();
+            // } else if (algoType === "CustomIndependents") {
+            //     this.algorithm = new wpd.CustomIndependents();
+            // }
             this.algorithm.deserialize(jsonObj.algorithm);
         }
 
@@ -132,6 +133,7 @@ wpd.AutoDetectionData = class {
     generateBinaryDataUsingFullImage(imageData) {
         this.binaryData = new Set();
         let refColor = this.colorDetectionMode === 'fg' ? this.fgColor : this.bgColor;
+        console.log("fgColor:"+this.fgColor);
         for (let imageIdx = 0; imageIdx < imageData.data.length; imageIdx++) {
             let ir = imageData.data[imageIdx * 4];
             let ig = imageData.data[imageIdx * 4 + 1];

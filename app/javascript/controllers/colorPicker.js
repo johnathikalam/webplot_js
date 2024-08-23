@@ -48,11 +48,14 @@ wpd.colorSelectionWidget = (function() {
     function startPicker() {
         let $selectedColor = document.getElementById('color-selection-selected-color-box');
 
-        $selectedColor.style.backgroundColor =
-            'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-        document.getElementById('color-selection-red').value = color[0];
-        document.getElementById('color-selection-green').value = color[1];
-        document.getElementById('color-selection-blue').value = color[2];
+        $selectedColor.style.backgroundColor = 'rgb(128,128,0)';
+        document.getElementById('color-selection-red').value = 128;
+        document.getElementById('color-selection-green').value = 128;
+        document.getElementById('color-selection-blue').value = 0;
+        // $selectedColor.style.backgroundColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+        // document.getElementById('color-selection-red').value = color[0];
+        // document.getElementById('color-selection-green').value = color[1];
+        // document.getElementById('color-selection-blue').value = color[2];
         renderColorOptions();
         wpd.popup.show('color-selection-widget');
     }
@@ -94,6 +97,7 @@ wpd.colorSelectionWidget = (function() {
         gui_color[1] = parseInt(document.getElementById('color-selection-green').value, 10);
         gui_color[2] = parseInt(document.getElementById('color-selection-blue').value, 10);
         color = gui_color;
+        console.log("color : "+ color);
         setColorDelegate(gui_color);
         wpd.popup.close('color-selection-widget');
         apply();
@@ -183,19 +187,33 @@ wpd.colorPicker = (function() {
     function init() {
         let $colorBtn = document.getElementById('color-button');
         let $colorDistance = document.getElementById('color-distance-value');
+        console.log("colorDistance: "+$colorDistance.value);
         let autoDetector = getAutoDetectionData();
         let $modeSelector = document.getElementById('color-detection-mode-select');
         let color = null;
 
         if (autoDetector.colorDetectionMode === 'fg') {
+            // autoDetector.fgColor.color[0], autoDetector.fgColor.color[1], autoDetector.fgColor.color[2] =  128,128,0;
+            
             color = autoDetector.fgColor;
+            console.log("Color:" + color);
         } else {
             color = autoDetector.bgColor;
         }
         let color_distance = autoDetector.colorDistance;
 
-        $colorBtn.style.backgroundColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+        $colorBtn.style.backgroundColor = 'rgb(128,128,0)';
+
+        console.log("color[0]: "+color[0]);
+        console.log("color[2]: "+color[1]);
+        console.log("color[3]: "+color[2]);
+
+
+        // $colorBtn.style.backgroundColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+        
+        // $colorDistance.value = '0';
         $colorDistance.value = color_distance;
+
         $modeSelector.value = autoDetector.colorDetectionMode;
     }
 

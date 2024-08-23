@@ -96,7 +96,7 @@
             <tr>
                 <td align="left"><label><input type="radio" name="plotlisting" id="r_xy" checked> {{ _("2D (X-Y) Plot") }}</label></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td align="left"><label><input type="radio" name="plotlisting" id="r_bar"> {{ _("2D Bar Plot") }}</label></td>
             </tr>
             <tr>
@@ -107,13 +107,13 @@
             </tr>
             <tr>
                 <td align="left"><label><input type="radio" name="plotlisting" id="r_map"> {{ _("Map With Scale Bar") }}</label></td>
-            </tr>
+            </tr> 
             <tr>
                 <td align="left"><label><input type="radio" name="plotlisting" id="r_image"> {{ _("Image") }}</label></td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <td align="left"><label><input type="radio" name="plotlisting" id="r_circular_chart_recorder"> {{ _("Circular Chart Recorder") }}</label></td>
-            </tr>
+            </tr> -->
         </table>
     </center>
     <p>&nbsp;</p>
@@ -122,9 +122,6 @@
 
 <!-- XY Alignment -->
 <div id="xyAlignment" class="popup" style="width: 600px;">
-    <div class="popupheading">{{ _("X and Y Axes Calibration") }}</div>
-    <p>&nbsp;</p>
-    <p align="center">{{ _("Enter X-values of the two points clicked on X-axis and Y-values of the two points clicked on Y-axes") }}</p>
     <center>
         <table padding="10">
             <tr>
@@ -136,173 +133,22 @@
             <tr>
                 <td align="center">{{ _("X-Axis") }}:</td>
                 <td align="center"><input type="text" size="8" id="xmin" value="0" onfocus="wpd.alignAxes.zoomCalPoint(0);" /></td>
-                <td align="center"><input type="text" size="8" id="xmax" value="1" onfocus="wpd.alignAxes.zoomCalPoint(1);" /></td>
+                <td align="center"><input type="text" size="8" id="xmax" value="250" onfocus="wpd.alignAxes.zoomCalPoint(1);" /></td>
                 <td align="center"><input type="checkbox" id="xlog"></td>
             </tr>
             <tr>
                 <td align="center">{{ _("Y-Axis") }}:</td>
-                <td align="center"><input type="text" size="8" id="ymin" value="0" onfocus="wpd.alignAxes.zoomCalPoint(2);" /></td>
-                <td align="center"><input type="text" size="8" id="ymax" value="1" onfocus="wpd.alignAxes.zoomCalPoint(3);" /></td>
+                <td align="center"><input type="text" size="8" id="ymin" value="-30" onfocus="wpd.alignAxes.zoomCalPoint(2);" /></td>
+                <td align="center"><input type="text" size="8" id="ymax" value="30" onfocus="wpd.alignAxes.zoomCalPoint(3);" /></td>
                 <td align="center"><input type="checkbox" id="ylog" /></td>
             </tr>
         </table>
         <br />
         <p align="center"><label><input type="checkbox" id="xy-axes-no-rotation" />{{ _("Assume axes are perfectly aligned with image coordinates (skip rotation correction)") }}</label></p>
         <br />
-        <p align="center" class="footnote">{{ _("*For dates, use yyyy/mm/dd hh:ii:ss format, where ii denotes minutes (e.g. 2013/10/23 or 2013/10 or 2013/10/23 10:15 or just 10:15). For exponents, enter values as 1e-3 for 10^-3.") }}</p>
         <p>&nbsp;</p>
         <p align="center"><input type="button" id="xybtn" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();" /></p>
     </center>
-</div>
-
-<!-- Bar Alignment -->
-<div id="barAlignment" class="popup" style="width: 420px;">
-    <div class="popupheading">{{ _("Bar Chart Calibration") }}</div>
-    <p align="center">{{ _("Enter the values at the two points selected on the continuous axes along the bars") }}</p>
-    <center>
-        <table padding="10">
-            <tr>
-                <td align="center" valign="bottom">{{ _("Point 1") }}</td>
-                <td align="center" valign="bottom" width="80">{{ _("Point 2") }}</td>
-                <td align="center" valign="bottom" width="80">{{ _("Log Scale") }}</td>
-            </tr>
-            <tr>
-                <td align="center"><input type="text" size="8" id="bar-axes-p1" value="0" onfocus="wpd.alignAxes.zoomCalPoint(0);" /></td>
-                <td align="center"><input type="text" size="8" id="bar-axes-p2" value="1" onfocus="wpd.alignAxes.zoomCalPoint(1);" /></td>
-                <td align="center"><input type="checkbox" id="bar-axes-log-scale" /></td>
-            </tr>
-        </table>
-    </center>
-    <p align="center"><label><input type="checkbox" id="bar-axes-rotated" /> Rotated axes (not exactly vertical or horizontal)</label></p>
-    <br />
-    <p align="center"><input type="button" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();" /></p>
-</div>
-
-<!-- Map Alignment -->
-<div id="mapAlignment" class="popup" style="width: 350px;">
-    <div class="popupheading">{{ _("Map Axes Calibration") }}</div>
-    <p align="left">Map Scale Size:</p>
-    <p align="center"><input type="text" size="6" id="scaleLength" value="1"> <input type="text" size="6" id="scaleUnits" value="{{ _("Units") }}" /></p>
-    <p>&nbsp;</p>
-    <p align="left">Origin location:</p>
-    <p align="left" style="text-indent:30px;"><label><input name="map-origin-radio" type="radio" id="map-origin-bottom-left" checked />Bottom left</label></p>
-    <p align="left" style="text-indent:30px;"><label><input name="map-origin-radio" type="radio" if="map-origin-top-left" />Top Left</label></p>
-    <br />
-    <p align="center"><input type="button" id="xybtn" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();"></p>
-</div>
-
-<!-- Polar Alignment -->
-<div id="polarAlignment" class="popup" style="width: 400px;">
-    <div class="popupheading">{{ _("Align Polar Axes") }}</div>
-    <center>
-        <table padding="15">
-            <tr>
-                <td>&nbsp;</td>
-                <td align="center"><b>{{ _("Point 1") }}</b></td>
-                <td align="center"><b>{{ _("Point 2") }}</b></td>
-                <td align="center"><b>{{ _("Log Scale") }}</b></td>
-            </tr>
-            <tr>
-                <td>R: </td>
-                <td align="center"><input type="text" size="6" id="polar-r1" value="1" onfocus="wpd.alignAxes.zoomCalPoint(1);" /></td>
-                <td align="center"><input type="text" size="6" id="polar-r2" value="1" onfocus="wpd.alignAxes.zoomCalPoint(2);" /></td>
-                <td align="center"><input type="checkbox" id="polar-log-scale" /></td>
-            </tr>
-            <tr>
-                <td>Θ: </td>
-                <td align="center"><input type="text" size="6" id="polar-theta1" value="1" onfocus="wpd.alignAxes.zoomCalPoint(1);" /></td>
-                <td align="center"><input type="text" size="6" id="polar-theta2" value="1" onfocus="wpd.alignAxes.zoomCalPoint(2);" /></td>
-                <td align="center">&nbsp;</td>
-            </tr>
-        </table>
-    </center>
-    <p align="center"><label><input type="radio" id="polar-degrees" name="angleUnits" checked> {{ _("Degrees") }}</label> <label><input type="radio" id="polar-radians" name="angleUnits"> {{ _("Radians") }}</label></p>
-    <p align="center"><input type="checkbox" id="polar-clockwise"> {{ _("Clockwise") }}</p>
-    <br />
-    <p align="center"><input type="button" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();"></p>
-</div>
-
-<!-- Ternary Alignment -->
-<div id="ternaryAlignment" class="popup">
-    <div class="popupheading">{{ _("Select Range of Variables") }}</div>
-    <p>&nbsp;</p>
-    <p align="center">{{ _("Axes Orientation") }}</p>
-    <center>
-        <table>
-            <tr>
-                <td><img src="images/ternarynormal.png" width="200"></td>
-                <td><img src="images/ternaryreverse.png" width="200"></td>
-            </tr>
-            <tr>
-                <td>
-                    <p align="center"><input type="radio" name="ternaryOrientation" id="ternarynormal" checked> {{ _("Normal") }}</p>
-                </td>
-                <td>
-                    <p align="center"><input type="radio" name="ternaryOrientation" id="ternaryreverse"> {{ _("Reverse") }}</p>
-                </td>
-            </tr>
-        </table>
-    </center>
-    <p align="center">{{ _("Range of Variables") }}</p>
-    <center>
-        <table>
-            <tr>
-                <td>
-                    <p align="center"><input type="radio" id="range0to1" name="ternaryRange" checked> {{ _("0 to 1") }}&nbsp;&nbsp;</p>
-                </td>
-                <td>
-                    <p align="center">&nbsp;&nbsp;<input type="radio" id="range0to100" name="ternaryRange"> {{ _("0 to 100") }}</p>
-                </td>
-            </tr>
-        </table>
-    </center>
-    <p>&nbsp;</p>
-    <p align="center"><input type="button" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();"></p>
-</div>
-
-<!-- Circular Chart Recorder Alignment -->
-<div id="circularChartRecorderAlignment" class="popup" style="width: 400px;">
-    <div class="popupheading">{{ _("Align Circular Chart Recorder Axes") }}</div>
-    <center>
-        <table padding="15">
-            <tr>
-                <td align="center"><b>{{ _("Time (T0)") }}</b></td>
-                <td align="left"><input type="text" size="15" id="circular-t0" value="0" /></td>
-            </tr>
-            <tr>
-                <td align="center"><b>{{ _("Ranges (R0, R2)") }}</b></td>
-                <td align="left">
-                    <input type="text" size="6" id="circular-r0" value="0" />
-                    <input type="text" size="6" id="circular-r2" value="0" />
-                </td>
-            </tr>
-            <tr>
-                <td align="center"><b>{{ _("Chart Start Time (T_Start)") }}</b></td>
-                <td align="left"><input type="text" size="15" id="circular-tstart" value="0" /></td>
-            </tr>
-            <tr>
-                <td>{{ _("Total Rotation Time") }}</td>
-                <td>
-                    <select id="circular-chart-recorder-rotation-time">
-                        <option value="week">{{ _("1 Week (7 days)") }}</option>
-                        <option value="day">{{ _("1 Day (24 hours)") }}</option>
-                        <!-- <option value="month">{{ _("1 Month") }}</option> -->
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>{{ _("Rotation Direction") }}</td>
-                <td>
-                    <select id="circular-chart-rotation-direction">
-                        <option value="anticlockwise">{{ _("Anti-Clockwise") }}</option>
-                        <option value="clockwise">{{ _("Clockwise") }}</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-    </center>
-    <br />
-    <p align="center"><input type="button" value="{{ _("OK") }}" onclick="wpd.alignAxes.align();"></p>
 </div>
 
 <!-- View Data -->
@@ -323,8 +169,6 @@
                     <input type="button" value="{{ _("Graph in Plotly*") }}" onclick="wpd.dataTable.exportToPlotly();" />
                     <input type="button" value="{{ _("Close") }}" onclick="wpd.popup.close('csvWindow');" />
                 </p>
-                <p align="center" class="footnote">{{ _("*Plotly is a secure data analysis and graphing site with data sharing and access controls.") }}</p>
-                <p align="center" class="footnote">{{ _("Visit <a href=\"http://plot.ly\" target=\"plotlyWebsite\">http://plot.ly</a> for details.") }}</p>
             </td>
             <td valign="top" style="width:250px;">
                 <!-- data side controls -->
@@ -371,47 +215,47 @@
 </div>
 
 <!-- Bar Chart Axes Calibration Intructions -->
-<div id="barAxesInfo" class="popup" style="width:650px;">
+<!-- <div id="barAxesInfo" class="popup" style="width:650px;">
     <div class="popupheading">{{ _("Align Bar Chart Axes") }}</div>
     <p>&nbsp;</p>
     <p align="center"><img src="images/barchart.png" /></p>
     <p align="center">{{ _("Click on two known points (P1, P2) on the continuous axes along the bars") }}</p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Proceed") }}" onclick="wpd.alignAxes.pickCorners();" /></p>
-</div>
+</div> -->
 
 <!-- Map Axes Calibration Instructions -->
-<div id="mapAxesInfo" class="popup" style="width: 350px;">
+<!-- <div id="mapAxesInfo" class="popup" style="width: 350px;">
     <div class="popupheading">{{ _("Align Map To Scale Bar") }}</div>
     <p>&nbsp;</p>
     <p align="center"><img src="images/map.png" /></p>
     <p align="center">{{ _("Click on the two ends of the scale bar on the map.") }}</p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Proceed") }}" onclick="wpd.alignAxes.pickCorners();"></p>
-</div>
+</div> -->
 
 <!-- Polar Axes Calibration Instructions -->
-<div id="polarAxesInfo" class="popup" style="width: 350px;">
+<!-- <div id="polarAxesInfo" class="popup" style="width: 350px;">
     <div class="popupheading">{{ _("Align Polar Axes") }}</div>
     <p>&nbsp;</p>
     <p align="center"><img src="images/polaraxes.png" /></p>
     <p align="center">{{ _("Click on the center, followed by two known points.") }}</p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Proceed") }}" onclick="wpd.alignAxes.pickCorners();"></p>
-</div>
+</div> -->
 
 <!-- Ternary Axes Calibration Instructions -->
-<div id="ternaryAxesInfo" class="popup" style="width: 350px;">
+<!-- <div id="ternaryAxesInfo" class="popup" style="width: 350px;">
     <div class="popupheading">{{ _("Align Ternary Axes") }}</div>
     <p>&nbsp;</p>
     <p align="center"><img src="images/ternaryaxes.png" /></p>
     <p align="center">{{ _("Click on the three corners in the order shown above.") }}</p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Proceed") }}" onclick="wpd.alignAxes.pickCorners();"></p>
-</div>
+</div> -->
 
 <!-- Circular Chart Recorder Axes Calibration Instructions -->
-<div id="circularChartRecorderAxesInfo" class="popup" style="width: 620px;">
+<!-- <div id="circularChartRecorderAxesInfo" class="popup" style="width: 620px;">
     <div class="popupheading">{{ _("Align Circular Chart Recorder Axes") }}</div>
     <p>&nbsp;</p>
     <p align="center"><img src="images/circular_chart_recorder_axes.png" /></p>
@@ -424,9 +268,9 @@
     </p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Proceed") }}" onclick="wpd.alignAxes.pickCorners();"></p>
-</div>
+</div> -->
 
-<!-- About WPD -->
+<!-- About WPD
 <div id="helpWindow" class="popup" style="width: 600px;">
     <div class="popupheading">{{ _("WebPlotDigitizer - Web Based Plot Digitizer") }}</div>
     <p>&nbsp;</p>
@@ -438,7 +282,7 @@
     <p align="center"><a href="https://automeris.io/WebPlotDigitizer" target="website">https://automeris.io/WebPlotDigitizer</a></p>
     <p>&nbsp;</p>
     <p align="center"><input type="button" value="{{ _("Close") }}" onclick="wpd.popup.close('helpWindow');"></p>
-</div>
+</div> -->
 
 <!-- Color Selection -->
 <div id="color-selection-widget" class="popup" style="width:400px;">

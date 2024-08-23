@@ -37,9 +37,16 @@ wpd.AxesCornersTool = (function() {
 
         this.onMouseClick = function(ev, pos, imagePos) {
             if (isCapturingCorners) {
-                pointCount = pointCount + 1;
 
-                _calibration.addPoint(imagePos.x, imagePos.y, 0, 0);
+                pointCount = pointCount + 1;
+                // _calibration.addPoint(imagePos.x, imagePos.y, 0, 0);
+                switch(pointCount){
+                    case 1: _calibration.addPoint(388.57202291110343, 1655.3711507293356, 0, 0);break;
+                    case 2: _calibration.addPoint(3179.1896272285253, 1655.3711507293356, 0, 0);break;
+                    case 3: _calibration.addPoint(388.57202291110343, 1655.3711507293356, 0, 0);break;
+                    case 4: _calibration.addPoint(388.57202291110343, 235.1883296567205, 0, 0);break;
+                }
+                console.log("imagePos: "+imagePos.x, imagePos.y, 0, 0)
                 _calibration.unselectAll();
                 _calibration.selectPoint(pointCount - 1);
                 wpd.graphicsWidget.forceHandlerRepaint();

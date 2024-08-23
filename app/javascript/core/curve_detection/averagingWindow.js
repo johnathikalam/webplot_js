@@ -24,8 +24,8 @@ var wpd = wpd || {};
 wpd.AveragingWindowAlgo = class {
 
     constructor() {
-        this._xStep = 10;
-        this._yStep = 10;
+        this._xStep = 1;
+        this._yStep = 1;
         this._wasRun = false;
     }
 
@@ -68,6 +68,7 @@ wpd.AveragingWindowAlgo = class {
         let algoCore = new wpd.AveragingWindowCore(
             autoDetector.binaryData, autoDetector.imageHeight, autoDetector.imageWidth, this._xStep,
             this._yStep, dataSeries);
+            console.log("autoDetector.binaryData : "+ autoDetector.binaryData+"\nautoDetector.imageHeigh : "+autoDetector.imageHeigh+"\nautoDetector.imageWidth : "+autoDetector.imageWidth+"\nthis._xStep : "+this._xStep+"\nthis._yStep : "+this._yStep+"\ndataSeries : "+dataSeries);
         algoCore.run();
     }
 };
