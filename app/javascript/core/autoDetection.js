@@ -86,51 +86,13 @@ wpd.AutoDetectionData = class {
             if (algoType === "AveragingWindowAlgo") {
                 this.algorithm = new wpd.AveragingWindowAlgo();
             } 
-            // else if (algoType === "AveragingWindowWithStepSizeAlgo") {
-            //     this.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
-            // } else if (algoType === "BarExtractionAlgo") {
-            //     this.algorithm = new wpd.BarExtractionAlgo();
-            // } else if (algoType === "BlobDetectorAlgo") {
-            //     this.algorithm = new wpd.BlobDetectorAlgo();
-            // } else if (algoType === "XStepWithInterpolationAlgo") {
-            //     this.algorithm = new wpd.XStepWithInterpolationAlgo();
-            // } else if (algoType === "CustomIndependents") {
-            //     this.algorithm = new wpd.CustomIndependents();
-            // }
             this.algorithm.deserialize(jsonObj.algorithm);
         }
 
         this.name = jsonObj.name;
     }
 
-    generateBinaryDataFromMask(imageData) {
-        this.binaryData = new Set();
-        let refColor = this.colorDetectionMode === 'fg' ? this.fgColor : this.bgColor;
-        for (let imageIdx of this.mask) {
-            let ir = imageData.data[imageIdx * 4];
-            let ig = imageData.data[imageIdx * 4 + 1];
-            let ib = imageData.data[imageIdx * 4 + 2];
-            let ia = imageData.data[imageIdx * 4 + 3];
-            if (ia === 0) {
-                // for completely transparent part of the image, assume white
-                ir = 255;
-                ig = 255;
-                ib = 255;
-            }
-            let dist = wpd.dist3d(ir, ig, ib, refColor[0], refColor[1], refColor[2]);
-            if (this.colorDetectionMode === 'fg') {
-                if (dist <= this.colorDistance) {
-                    this.binaryData.add(imageIdx);
-                }
-            } else {
-                if (dist >= this.colorDistance) {
-                    this.binaryData.add(imageIdx);
-                }
-            }
-        }
-    }
-
-    generateBinaryDataUsingFullImage(imageData) {
+    generateBinaryData(imageData) {
         this.binaryData = new Set();
         let refColor = this.colorDetectionMode === 'fg' ? this.fgColor : this.bgColor;
         console.log("fgColor:"+this.fgColor);
@@ -156,18 +118,6 @@ wpd.AutoDetectionData = class {
                 }
             }
         }
-    }
-
-    generateBinaryData(imageData) {
-        if (this.mask == null || this.mask.size == 0) {
-            this.generateBinaryDataUsingFullImage(imageData);
-        } else {
-            this.generateBinaryDataFromMask(imageData);
-        }
-    }
-
-    setMask(mask) {
-        this.mask = mask;
     }
 };
 

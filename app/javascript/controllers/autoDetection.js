@@ -1,23 +1,3 @@
-/*
-    WebPlotDigitizer - https://automeris.io/WebPlotDigitizer
-
-    Copyright 2010-2024 Ankit Rohatgi <plots@automeris.io>
-
-    This file is part of WebPlotDigitizer.
-
-    WebPlotDigitizer is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    WebPlotDigitizer is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with WebPlotDigitizer.  If not, see <http://www.gnu.org/licenses/>.
-*/
 var wpd = wpd || {};
 wpd.autoExtraction = (function() {
     function start() {
@@ -76,19 +56,6 @@ wpd.algoManager = (function() {
         if (selectedValue === 'averagingWindow') {
             autoDetector.algorithm = new wpd.AveragingWindowAlgo();
         } 
-        // else if (selectedValue === 'XStepWithInterpolation') {
-        //     autoDetector.algorithm = new wpd.XStepWithInterpolationAlgo();
-        // } else if (selectedValue === 'CustomIndependents') {
-        //     autoDetector.algorithm = new wpd.CustomIndependents();
-        // } else if (selectedValue === 'XStep') {
-        //     autoDetector.algorithm = new wpd.AveragingWindowWithStepSizeAlgo();
-        // } else if (selectedValue === 'blobDetector') {
-        //     autoDetector.algorithm = new wpd.BlobDetectorAlgo();
-        // } else if (selectedValue === 'barExtraction' || selectedValue === 'histogram') {
-        //     autoDetector.algorithm = new wpd.BarExtractionAlgo();
-        // } else {
-        //     autoDetector.algorithm = new wpd.AveragingWindowAlgo();
-        // }
 
         renderParameters(autoDetector.algorithm);
     }
@@ -106,11 +73,6 @@ wpd.algoManager = (function() {
                 '</td><td><input type="text" size=3 id="algo-param-' + algoParamKeys[pi] +
                 '" class="algo-params" value="' + algoParam[2] + '"/></td><td>' +
                 algoParam[1] + '</td></tr>';
-
-            // tableString += '<tr><td>' + algoParam[0] +
-            //     '</td><td><input type="text" size=3 id="algo-param-' + algoParamKeys[pi] +
-            //     '" class="algo-params" value="' + algoParam[2] + '"/></td><td>' +
-            //     algoParam[1] + '</td></tr>';
         }
 
         tableString += "</table>";
@@ -126,11 +88,6 @@ wpd.algoManager = (function() {
         let ctx = wpd.graphicsWidget.getAllContexts();
         let imageSize = wpd.graphicsWidget.getImageSize();
 
-        // console.log("algo: " + algo);
-        // console.log("axes: " + axes);
-        // console.log("dataset: " + dataset);
-        // console.log("imageSize: "+imageSize);
-        // console.log("ctx: "+ctx);
         let algoParams = {};
         for (let pi = 0; pi < $paramFields.length; pi++) {
             let paramId = $paramFields[pi].id;
@@ -185,23 +142,8 @@ wpd.dataMask = (function() {
         autoDetector.setMask(maskData);
     }
 
-    function markBox() {
-        let tool = new wpd.BoxMaskTool();
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    function markPen() {
-        let tool = new wpd.PenMaskTool();
-        wpd.graphicsWidget.setTool(tool);
-    }
-
     function eraseMarks() {
         let tool = new wpd.EraseMaskTool();
-        wpd.graphicsWidget.setTool(tool);
-    }
-
-    function viewMask() {
-        let tool = new wpd.ViewMaskTool();
         wpd.graphicsWidget.setTool(tool);
     }
 
@@ -212,10 +154,7 @@ wpd.dataMask = (function() {
 
     return {
         grabMask: grabMask,
-        markBox: markBox,
-        markPen: markPen,
         eraseMarks: eraseMarks,
-        viewMask: viewMask,
         clearMask: clearMask
     };
 })();

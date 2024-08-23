@@ -482,9 +482,11 @@ wpd.tree = (function() {
     function onSelection(elem, path, suppressSecondaryActions) {
         if (path === '/' + wpd.gettext('image')) {
             onImageSelection(elem, path, suppressSecondaryActions);
-        } else if (path.startsWith('/' + wpd.gettext('image') + '/')) {
+        } 
+        else if (path.startsWith('/' + wpd.gettext('image') + '/')) {
             selectPath('/' + wpd.gettext('image'));
-        } else if (path === '/' + wpd.gettext('datasets')) {
+        }
+         else if (path === '/' + wpd.gettext('datasets')) {
             onDatasetGroupSelection();
             showTreeItemWidget('dataset-group-tree-widget');
             activeAxes = null;

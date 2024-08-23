@@ -31,7 +31,8 @@ wpd.AxesCalibrator = class {
 wpd.XYAxesCalibrator = class extends wpd.AxesCalibrator {
 
     start() {
-        wpd.popup.show('xyAxesInfo');
+        // wpd.popup.show('xyAxesInfo');
+        wpd.alignAxes.pickCorners();
     }
 
     reload() {

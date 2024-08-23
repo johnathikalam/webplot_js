@@ -35,7 +35,7 @@ wpd.imageManager = (function() {
 
     function load() {
         let $input = document.getElementById('fileLoadBox');
-        console.log($input.files[0]);
+        console.log($input.files[0].name);
         if ($input.files.length > 0) {
             _newLoad = true;
             initializeFileManager($input.files);

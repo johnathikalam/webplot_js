@@ -126,9 +126,9 @@ wpd.acquireData = (function() {
             // case 's':
             //     adjustPoints();
             //     break;
-            case 'e':
-                editLabels();
-                break;
+            // case 'e':
+            //     editLabels();
+            //     break;
             default:
                 break;
         }
