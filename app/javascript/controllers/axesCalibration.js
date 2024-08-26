@@ -305,19 +305,8 @@ wpd.alignAxes = (function() {
         const existingAxesNames = plotData.getAxesNames();
         if (axType === wpd.XYAxes) {
             name = wpd.gettext("axes-name-xy");
-        } else if (axType === wpd.PolarAxes) {
-            name = wpd.gettext("axes-name-polar");
-        } else if (axType === wpd.MapAxes) {
-            name = wpd.gettext("axes-name-map");
-        } else if (axType === wpd.TernaryAxes) {
-            name = wpd.gettext("axes-name-ternary");
-        } else if (axType === wpd.BarAxes) {
-            name = wpd.gettext("axes-name-bar");
-        } else if (axType === wpd.ImageAxes) {
-            name = wpd.gettext("axes-name-image");
-        } else if (axType === wpd.CircularChartRecorderAxes) {
-            name = wpd.gettext("axes-name-circular-chart-recorder");
         }
+
         // avoid conflict with an existing name
         let idx = 2;
         let fullName = name;

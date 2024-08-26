@@ -29,68 +29,7 @@ wpd.gridDetection = (function() {
         $backgroundMode.checked = backgroundMode;
     }
 
-
-    // function viewMask() {
-    //     let tool = new wpd.GridViewMaskTool();
-    //     wpd.graphicsWidget.setTool(tool);
-    // }
-
-    function clearMask() {
-        wpd.graphicsWidget.removeTool();
-        wpd.graphicsWidget.removeRepainter();
-        wpd.appData.getPlotData().getGridDetectionData().gridMask = {
-            xmin: null,
-            xmax: null,
-            ymin: null,
-            ymax: null,
-            pixels: new Set()
-        };
-        wpd.graphicsWidget.resetData();
-    }
-
-    function grabMask() {
-        // Mask is just a list of pixels with the yellow color in the data layer
-        let ctx = wpd.graphicsWidget.getAllContexts();
-        let imageSize = wpd.graphicsWidget.getImageSize();
-        let maskDataPx = ctx.oriDataCtx.getImageData(0, 0, imageSize.width, imageSize.height);
-        let maskData = new Set();
-        let mi = 0;
-        let autoDetector = wpd.appData.getPlotData().getGridDetectionData();
-
-        for (let i = 0; i < maskDataPx.data.length; i += 4) {
-            if (maskDataPx.data[i] === 255 && maskDataPx.data[i + 1] === 255 &&
-                maskDataPx.data[i + 2] === 0) {
-
-                maskData.add(i / 4);
-                mi++;
-
-                let x = parseInt((i / 4) % imageSize.width, 10);
-                let y = parseInt((i / 4) / imageSize.width, 10);
-
-                if (mi === 1) {
-                    autoDetector.gridMask.xmin = x;
-                    autoDetector.gridMask.xmax = x;
-                    autoDetector.gridMask.ymin = y;
-                    autoDetector.gridMask.ymax = y;
-                } else {
-                    if (x < autoDetector.gridMask.xmin) {
-                        autoDetector.gridMask.xmin = x;
-                    }
-                    if (x > autoDetector.gridMask.xmax) {
-                        autoDetector.gridMask.xmax = x;
-                    }
-                    if (y < autoDetector.gridMask.ymin) {
-                        autoDetector.gridMask.ymin = y;
-                    }
-                    if (y > autoDetector.gridMask.ymax) {
-                        autoDetector.gridMask.ymax = y;
-                    }
-                }
-            }
-        }
-        autoDetector.gridMask.pixels = maskData;
-    }
-
+    
     function run() {
 
         wpd.graphicsWidget.removeTool();
@@ -237,8 +176,6 @@ wpd.gridDetection = (function() {
 
     return {
         start: start,
-        clearMask: clearMask,
-        grabMask: grabMask,
         startColorPicker: startColorPicker,
         changeColorDistance: changeColorDistance,
         changeBackgroundMode: changeBackgroundMode,
