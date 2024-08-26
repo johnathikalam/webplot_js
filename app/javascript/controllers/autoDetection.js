@@ -19,18 +19,18 @@ wpd.algoManager = (function() {
         dataset = wpd.tree.getActiveDataset();
         axes = wpd.appData.getPlotData().getAxesForDataset(dataset);
 
-        let innerHTML = '';
-        let $algoOptions = document.getElementById('auto-extract-algo-name');
+        // let innerHTML = '';
+        // let $algoOptions = document.getElementById('auto-extract-algo-name');
 
-        // Averaging Window
-        if (!(axes instanceof wpd.BarAxes)) {
-            innerHTML +=
-                '<option value="averagingWindow">' + wpd.gettext('averaging-window') + '</option>';
-        }
+        // // Averaging Window
+        // if (!(axes instanceof wpd.BarAxes)) {
+        //     innerHTML +=
+        //         '<option value="averagingWindow">' + wpd.gettext('averaging-window') + '</option>';
+        // }
 
     
 
-        $algoOptions.innerHTML = innerHTML;
+        // $algoOptions.innerHTML = innerHTML;
 
         let autoDetector = getAutoDetectionData();
         if (autoDetector.algorithm != null) {
@@ -49,8 +49,9 @@ wpd.algoManager = (function() {
     }
 
     function applyAlgoSelection() {
-        let $algoOptions = document.getElementById('auto-extract-algo-name');
-        let selectedValue = $algoOptions.value;
+        // let $algoOptions = document.getElementById('auto-extract-algo-name');
+        let selectedValue = "averagingWindow";
+        // let selectedValue = $algoOptions.value;
         let autoDetector = getAutoDetectionData();
 
         if (selectedValue === 'averagingWindow') {
